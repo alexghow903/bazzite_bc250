@@ -26,7 +26,6 @@ dnf install -y tmux
 echo -n "Adding mesa copr... "
 sed -i '2s/^/exclude=mesa*\n/' /etc/yum.repos.d/fedora.repo
 sed -i '2s/^/exclude=mesa*\n/' /etc/yum.repos.d/fedora-updates.repo
-# dnf5 install -y dnf-plugins-core/
 dnf5 copr enable @exotic-soc/bc250-mesa -y
 dnf5 upgrade -y 
 
@@ -47,7 +46,8 @@ echo 'options amdgpu sg_display=0' > /etc/modprobe.d/options-amdgpu.conf
 echo -n "Setting nct6683 module option... "
 echo 'options nct6683 force=true' > /etc/modprobe.d/options-sensors.conf
 echo "OK, regenerating initrd (this may take a while)"
-dracut --stdlog=4 --regenerate-all --force
+# dracut --stdlog=4 --regenerate-all --force
+rpm-ostree gen-initrd /mnt/root
 
 # clear nomodeset from /etc/default/grub and update config
 echo "Fixing up GRUB config..."
