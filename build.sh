@@ -46,8 +46,8 @@ echo 'options amdgpu sg_display=0' > /etc/modprobe.d/options-amdgpu.conf
 echo -n "Setting nct6683 module option... "
 echo 'options nct6683 force=true' > /etc/modprobe.d/options-sensors.conf
 echo "OK, regenerating initrd (this may take a while)"
-# dracut --stdlog=4 --regenerate-all --force
-rpm-ostree initramfs --enable
+dracut --stdlog=4 --regenerate-all
+# rpm-ostree initramfs --enable --force
 
 # clear nomodeset from /etc/default/grub and update config
 echo "Fixing up GRUB config..."
