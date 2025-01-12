@@ -47,7 +47,7 @@ echo -n "Setting nct6683 module option... "
 echo 'options nct6683 force=true' > /etc/modprobe.d/options-sensors.conf
 echo "OK, regenerating initrd (this may take a while)"
 # dracut --stdlog=4 --regenerate-all --force
-rpm-ostree gen-initrd /mnt/root
+rpm-ostree upgrade
 
 # clear nomodeset from /etc/default/grub and update config
 echo "Fixing up GRUB config..."
