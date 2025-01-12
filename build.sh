@@ -26,9 +26,9 @@ dnf install -y tmux
 echo -n "Adding mesa copr... "
 sed -i '2s/^/exclude=mesa*\n/' /etc/yum.repos.d/fedora.repo
 sed -i '2s/^/exclude=mesa*\n/' /etc/yum.repos.d/fedora-updates.repo
-dnf install dnf-plugins-core
-dnf copr enable @exotic-soc/bc250-mesa -y
-dnf upgrade -y 
+# dnf5 install -y dnf-plugins-core/
+dnf5 copr enable @exotic-soc/bc250-mesa -y
+dnf5 upgrade -y 
 
 # make sure radv_debug option is set in environment
 echo -n "Setting RADV_DEBUG option... "
