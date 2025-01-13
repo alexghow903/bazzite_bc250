@@ -46,11 +46,11 @@ echo 'options amdgpu sg_display=0' > /etc/modprobe.d/options-amdgpu.conf
 echo -n "Setting nct6683 module option... "
 echo 'options nct6683 force=true' > /etc/modprobe.d/options-sensors.conf
 
-# clear nomodeset from /etc/default/grub and update config
-echo "Fixing up GRUB config..."
-sed -i 's/nomodeset//g' /etc/default/grub
-sed -i 's/amdgpu\.sg_display=0//g' /etc/default/grub
-grub2-mkconfig -o /etc/grub2.cfg
+# # clear nomodeset from /etc/default/grub and update config
+# echo "Fixing up GRUB config..."
+# sed -i 's/nomodeset//g' /etc/default/grub
+# sed -i 's/amdgpu\.sg_display=0//g' /etc/default/grub
+# grub2-mkconfig -o /etc/grub2.cfg
 
 #### Example for enabling a System Unit File
 
