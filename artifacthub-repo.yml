@@ -2,7 +2,7 @@
 # adding the Repository ID and your data there on `owners`. This makes it so we can all have a fancy index of all custom
 # images. If you dont want to be on that, dont worry, this should not do anything by itself
 
-repositoryID: my-custom-id-here # Fill in with your own credentials 
+repositoryID: 915819830 # Fill in with your own credentials 
 owners: # (optional, used to claim repository ownership)
-  - name: My Name
-    email: my_email@email.com
+  - name: Alexander Howard
+    email: how21013@byui.edu
