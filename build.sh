@@ -54,4 +54,4 @@ echo 'options nct6683 force=true' > /etc/modprobe.d/options-sensors.conf
 
 #### Example for enabling a System Unit File
 
-systemctl enable podman.socket
+# systemctl enable podman.socket
