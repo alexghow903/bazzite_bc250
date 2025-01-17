@@ -1,5 +1,5 @@
 ---
-name: Build Custom Image
+name: Build Custom ISO
 
 on: workflow_dispatch
 
