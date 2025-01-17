@@ -25,7 +25,7 @@ jobs:
         image_tag: ${{ env.IMAGE_TAG }}
         version: ${{ env.VERSION }}
         variant: ${{ env.VARIANT }}
-        iso_name: ${{ env.IMAGE_NAME }}-${{ env.IMAGE_TAG }}-${{ env.VERSION }}.iso
+        iso_name: ${{ env.IMAGE_NAME }}.iso
     
     # This example is for uploading your ISO as a Github artifact. You can do something similar using any cloud storage, so long as you copy the output
     - name: Upload ISO as artifact
