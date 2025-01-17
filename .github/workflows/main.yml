@@ -1,0 +1,41 @@
+---
+name: Build Custom Image
+
+on: workflow_dispatch
+
+env:
+  IMAGE_NAME: "${{ github.event.repository.name }}"  # the name of the image produced by this build, matches repo names
+  IMAGE_DESC: "My Customized Universal Blue Image"
+  IMAGE_REGISTRY: "ghcr.io/${{ github.repository_owner }}"  # do not edit
+  ARTIFACTHUB_LOGO_URL: "https://avatars.githubusercontent.com/u/120078124?s=200&v=4"  # You should put your own image here so that you get a fancy profile image on https://artifacthub.io/
+
+jobs:
+  build_push:
+    name: Build and push image
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: Build ISO
+      uses: jasonn3/build-container-installer@main
+      id: build
+      with:
+        arch: ${{ env.ARCH}}
+        image_name: ${{ env.IMAGE_NAME}}
+        image_repo: ${{ env.IMAGE_REPO}}
+        image_tag: ${{ env.IMAGE_TAG }}
+        version: ${{ env.VERSION }}
+        variant: ${{ env.VARIANT }}
+        iso_name: ${{ env.IMAGE_NAME }}-${{ env.IMAGE_TAG }}-${{ env.VERSION }}.iso
+    
+    # This example is for uploading your ISO as a Github artifact. You can do something similar using any cloud storage, so long as you copy the output
+    - name: Upload ISO as artifact
+      id: upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.build.outputs.iso_name }}
+        path: |
+          ${{ steps.build.outputs.iso_path }}
+          ${{ steps.build.outputs.iso_path }}-CHECKSUM
+        if-no-files-found: error
+        retention-days: 0
+        compression-level: 0
