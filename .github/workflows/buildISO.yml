@@ -74,43 +74,6 @@ jobs:
         with:
           string: ${{ env.IMAGE_REGISTRY }}
 
-      # - name: Determine Flatpak Dependencies
-      #   id: flatpak_dependencies
-      #   shell: bash
-      #   run: |
-      #     set -ex
-      #     image="${{ steps.registry_case.outputs.lowercase }}/${{ matrix.image_name }}:${{ steps.generate-tag.outputs.tag }}"
-      #     # Make temp space
-      #     TEMP_FLATPAK_INSTALL_DIR=$(mktemp -d -p ${{ github.workspace }} flatpak.XXX)
-      #     # Get list of refs from directory
-      #     FLATPAK_REFS_DIR=${{ github.workspace }}/${{ steps.generate-flatpak-dir-shortname.outputs.flatpak-dir-shortname }}
-      #     FLATPAK_REFS_DIR_LIST=$(cat ${FLATPAK_REFS_DIR}/* | tr '\n' ' ' )
-      #     # Generate install script
-      #     cat << EOF > ${TEMP_FLATPAK_INSTALL_DIR}/script.sh
-      #     cat /temp_flatpak_install_dir/script.sh
-      #     mkdir -p /flatpak/flatpak /flatpak/triggers
-      #     mkdir /var/tmp || true
-      #     chmod -R 1777 /var/tmp
-      #     flatpak config --system --set languages "*"
-      #     flatpak remote-add --system flathub https://flathub.org/repo/flathub.flatpakrepo
-      #     flatpak install --system -y ${FLATPAK_REFS_DIR_LIST}
-      #     ostree refs --repo=\${FLATPAK_SYSTEM_DIR}/repo | grep '^deploy/' | grep -v 'org\.freedesktop\.Platform\.openh264' | sed 's/^deploy\///g' > /output/flatpaks_with_deps
-      #     EOF
-      #     docker run --rm --privileged \
-      #       --entrypoint bash \
-      #       -e FLATPAK_SYSTEM_DIR=/flatpak/flatpak \
-      #       -e FLATPAK_TRIGGERSDIR=/flatpak/triggers \
-      #       --volume ${FLATPAK_REFS_DIR}:/output \
-      #       --volume ${TEMP_FLATPAK_INSTALL_DIR}:/temp_flatpak_install_dir \
-      #       ${image} /temp_flatpak_install_dir/script.sh
-      #     docker rmi ${image}
-
-      - name: Setup Bazzite Repo
-        id: setup-bazzite-repo
-        shell: bash
-        run: |
-          curl -Lo ${{ github.workspace }}/bazzite.repo https://copr.fedorainfracloud.org/coprs/kylegospo/bazzite/repo/fedora-${{ matrix.major_version }}/kylegospo-bazzite-fedora-${{ matrix.major_version }}.repo
-
       - name: Build ISOs
         uses: jasonn3/build-container-installer@main
         id: build
@@ -118,31 +81,20 @@ jobs:
           arch: x86_64
           image_name: ${{ matrix.image_name }}
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
-          # variant: 'Kinoite'
+          variant: 'Bazzite'
           version: ${{ matrix.major_version }}
           image_tag: ${{ steps.generate-tag.outputs.tag }}
           # secure_boot_key_url: '${{ github.server_url }}/${{ github.repository }}/raw/main/secure_boot.der'
-          enrollment_password: 'universalblue'
+          # enrollment_password: 'universalblue'
           iso_name: ${{ matrix.image_name }}-${{ steps.generate-tag.outputs.tag }}.iso
-          enable_cache_dnf: "false"
-          enable_cache_skopeo: "false"
-          flatpak_remote_refs_dir: ${{ steps.generate-flatpak-dir-shortname.outputs.flatpak-dir-shortname }}
-          enable_flatpak_dependencies: "false"
-          extra_boot_params: ${{ steps.generate-extra-params.outputs.extra-boot-params }}
+          # enable_cache_dnf: "false"
+          # enable_cache_skopeo: "false"
+          # flatpak_remote_refs_dir: ${{ steps.generate-flatpak-dir-shortname.outputs.flatpak-dir-shortname }}
+          # enable_flatpak_dependencies: "false"
+          # extra_boot_params: ${{ steps.generate-extra-params.outputs.extra-boot-params }}
           # additional_templates: '/github/workspace/installer/lorax_templates/remove_root_password_prompt.tmpl /github/workspace/installer/lorax_templates/set_default_user.tmpl'
-          repos: '/github/workspace/bazzite.repo /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo'
+          # repos: '/github/workspace/bazzite.repo /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo'
 
-      # - name: Build ISO
-      #   uses: jasonn3/build-container-installer@main
-      #   id: build
-      #   with:
-      #     arch: ${{ env.ARCH}}
-      #     image_name: ${{ env.IMAGE_NAME}}
-      #     image_repo: ${{ env.IMAGE_REPO}}
-      #     image_tag: ${{ env.IMAGE_TAG }}
-      #     version: ${{ env.VERSION }}
-      #     variant: ${{ env.VARIANT }}
-      #     iso_name: ${{ env.IMAGE_NAME }}-${{ env.IMAGE_TAG }}-${{ env.VERSION }}.iso
 
       - name: Move ISOs to Upload Directory
         id: upload-directory
