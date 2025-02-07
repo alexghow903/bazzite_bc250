@@ -112,16 +112,16 @@ jobs:
           curl -Lo ${{ github.workspace }}/bazzite.repo https://copr.fedorainfracloud.org/coprs/kylegospo/bazzite/repo/fedora-${{ matrix.major_version }}/kylegospo-bazzite-fedora-${{ matrix.major_version }}.repo
 
       - name: Build ISOs
-        uses: jasonn3/build-container-installer@v1.2.4
+        uses: jasonn3/build-container-installer@main
         id: build
         with:
           arch: x86_64
           image_name: ${{ matrix.image_name }}
           image_repo: ${{ steps.registry_case.outputs.lowercase }}
-          variant: 'Kinoite'
+          # variant: 'Kinoite'
           version: ${{ matrix.major_version }}
           image_tag: ${{ steps.generate-tag.outputs.tag }}
-          secure_boot_key_url: '${{ github.server_url }}/${{ github.repository }}/raw/main/secure_boot.der'
+          # secure_boot_key_url: '${{ github.server_url }}/${{ github.repository }}/raw/main/secure_boot.der'
           enrollment_password: 'universalblue'
           iso_name: ${{ matrix.image_name }}-${{ steps.generate-tag.outputs.tag }}.iso
           enable_cache_dnf: "false"
@@ -129,8 +129,20 @@ jobs:
           flatpak_remote_refs_dir: ${{ steps.generate-flatpak-dir-shortname.outputs.flatpak-dir-shortname }}
           enable_flatpak_dependencies: "false"
           extra_boot_params: ${{ steps.generate-extra-params.outputs.extra-boot-params }}
-          additional_templates: '/github/workspace/installer/lorax_templates/remove_root_password_prompt.tmpl /github/workspace/installer/lorax_templates/set_default_user.tmpl'
+          # additional_templates: '/github/workspace/installer/lorax_templates/remove_root_password_prompt.tmpl /github/workspace/installer/lorax_templates/set_default_user.tmpl'
           repos: '/github/workspace/bazzite.repo /etc/yum.repos.d/fedora.repo /etc/yum.repos.d/fedora-updates.repo'
+
+      # - name: Build ISO
+      #   uses: jasonn3/build-container-installer@main
+      #   id: build
+      #   with:
+      #     arch: ${{ env.ARCH}}
+      #     image_name: ${{ env.IMAGE_NAME}}
+      #     image_repo: ${{ env.IMAGE_REPO}}
+      #     image_tag: ${{ env.IMAGE_TAG }}
+      #     version: ${{ env.VERSION }}
+      #     variant: ${{ env.VARIANT }}
+      #     iso_name: ${{ env.IMAGE_NAME }}-${{ env.IMAGE_TAG }}-${{ env.VERSION }}.iso
 
       - name: Move ISOs to Upload Directory
         id: upload-directory
