@@ -83,7 +83,7 @@ jobs:
         run: |
           dnf install libdrm-devel rpmdev-setuptree cmake make g++ git buildah docker podman -y
           rpmdev-setuptree
-          mv ~/oberon.spec ~/rpmbuild/SPECS/oberon.spec
+          mv oberon.spec ~/rpmbuild/SPECS/oberon.spec
           spectool -g -R ~/rpmbuild/SPECS/oberon.spec
           rpmbuild -bb ~/rpmbuild/SPECS/oberon.spec
 
